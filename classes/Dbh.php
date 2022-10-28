@@ -2,19 +2,22 @@
 
 class dbh {
 
-    public $hostname = "localhost";
-    public $username = "root";
-    public $password = "";
-    public $dbname = "zuriphp";
+    public $hostname ;
+    public $username ;
+    public $password ;
+    public $dbname ;
 
-     function set_host_name($givenname){
-        $this->name = $givenname;
+    protected function connect(){
+        $this->hostname='localhost';
+        $this->username='root';
+        $this->password='';
+        $this->dbname='zuriphp';
+        $connect_db = new mysqli($this->hostname,$this->username,$this->password,$this->dbname);
+
+        return $connect_db;
+
+
     }
-    function set_user_name($givenname){
-        $this->name = $givenname;
-    }
-
-
 }
 
 
