@@ -1,7 +1,6 @@
 <?php
 
 class dbh {
-
     public $hostname ;
     public $username ;
     public $password ;
@@ -15,8 +14,6 @@ class dbh {
         $connect_db = new mysqli($this->hostname,$this->username,$this->password,$this->dbname);
 
         return $connect_db;
-
-
     }
 }
 

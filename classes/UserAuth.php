@@ -10,9 +10,29 @@ class UserAuth extends Dbh{
         $this->db = new Dbh();
     }
 
+    public function validatePassword($password, $confirmPassword){
+        if($password === $confirmPassword){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function checkEmailExist($email){
+        $conn = $this->db->connect();
+        $sql = "SELECT * FROM users WHERE email = '$email'";
+        $result = $conn->query($sql);
+        if($result->num_rows > 0){
+            return true;
+            // return $result->fetch_assoc();
+        } else {
+            return false;
+        }
+    }
+
     public function register($fullname, $email, $password, $confirmPassword, $country, $gender){
         $conn = $this->db->connect();
-        if($this->confirmPasswordMatch($password, $confirmPassword)){
+        if($this->validatePassword($password, $confirmPassword)){
             $sql = "INSERT INTO Students (`full_names`, `email`, `password`, `country`, `gender`) VALUES ('$fullname','$email', '$password', '$country', '$gender')";
             if($conn->query($sql)){
                echo "Ok";
@@ -34,6 +54,22 @@ class UserAuth extends Dbh{
         } else {
             header("Location: forms/login.php");
         }
+    }
+
+    public function updateUser($username, $password){
+        $conn = $this->db->connect();
+        if($this->checkEmailExist($email)){
+            $sql = "UPDATE users SET password = '$password' WHERE username = '$username'";
+        if($conn->query($sql) === TRUE){
+            header("Location: ../dashboard.php?update=success");
+        } else {
+            header("Location: forms/resetpassword.php?error=1");
+        }
+        }
+        else{
+           echo "error occured";
+        }
+        
     }
 
     public function getUser($username){
@@ -92,15 +128,7 @@ class UserAuth extends Dbh{
         }
     }
 
-    public function updateUser($username, $password){
-        $conn = $this->db->connect();
-        $sql = "UPDATE users SET password = '$password' WHERE username = '$username'";
-        if($conn->query($sql) === TRUE){
-            header("Location: ../dashboard.php?update=success");
-        } else {
-            header("Location: forms/resetpassword.php?error=1");
-        }
-    }
+ 
 
     public function getUserByUsername($username){
         $conn = $this->db->connect();
@@ -119,11 +147,5 @@ class UserAuth extends Dbh{
         header('Location: index.php');
     }
 
-    public function confirmPasswordMatch($password, $confirmPassword){
-        if($password === $confirmPassword){
-            return true;
-        } else {
-            return false;
-        }
-    }
+  
 }

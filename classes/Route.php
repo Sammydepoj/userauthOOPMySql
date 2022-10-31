@@ -1,7 +1,5 @@
 <?php
 include_once 'UserAuth.php';
-
-
 class formController extends UserAuth{
 
     public $fullname ;
@@ -14,8 +12,7 @@ class formController extends UserAuth{
     public function __construct(){
         $this->db = new Dbh();
 
-
-       public function handleForm(){
+        function handleForm(){
             switch(true) {
                 case isset($_POST['register']):
                     //unpack all data for registering
