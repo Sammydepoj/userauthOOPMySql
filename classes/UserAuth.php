@@ -4,7 +4,7 @@ session_start();
 
 class UserAuth extends Dbh{
     
-    private $db;
+    public $db;
 
     public function __construct(){
         $this->db = new Dbh();
@@ -18,24 +18,13 @@ class UserAuth extends Dbh{
         }
     }
 
-    public function checkEmailExist($email){
-        $conn = $this->db->connect();
-        $sql = "SELECT * FROM users WHERE email = '$email'";
-        $result = $conn->query($sql);
-        if($result->num_rows > 0){
-            return true;
-            // return $result->fetch_assoc();
-        } else {
-            return false;
-        }
-    }
-
     public function register($fullname, $email, $password, $confirmPassword, $country, $gender){
         $conn = $this->db->connect();
         if($this->validatePassword($password, $confirmPassword)){
             $sql = "INSERT INTO Students (`full_names`, `email`, `password`, `country`, `gender`) VALUES ('$fullname','$email', '$password', '$country', '$gender')";
             if($conn->query($sql)){
-               echo "Ok";
+               echo "<script>alert('Registered successful! You can proceed to login now');</script>";
+               echo "<script>window.location.href ='forms/login.php'</script>";
             } else {
                 echo "Opps". $conn->error;
             }
@@ -50,31 +39,51 @@ class UserAuth extends Dbh{
         $result = $conn->query($sql);
         if($result->num_rows > 0){
             $_SESSION['email'] = $email;
-            header("Location: ../dashboard.php");
+            header("Location: ./dashboard.php");
         } else {
             header("Location: forms/login.php");
         }
     }
 
-    public function updateUser($username, $password){
+    public function checkEmailExist($email){
+        $conn = $this->db->connect();
+        $sql = "SELECT * FROM Students WHERE email = '$email'";
+        $result = $conn->query($sql);
+        if($result->num_rows > 0){
+            return true;
+            // return $result->fetch_assoc();
+        } else {
+            return false;
+        }
+    }
+    public function updateUser($email, $password){
         $conn = $this->db->connect();
         if($this->checkEmailExist($email)){
-            $sql = "UPDATE users SET password = '$password' WHERE username = '$username'";
+            $sql = "UPDATE Students SET password = '$password' WHERE Email = '$email'";
         if($conn->query($sql) === TRUE){
-            header("Location: ../dashboard.php?update=success");
+            header("Location: ./dashboard.php?update=success");
         } else {
             header("Location: forms/resetpassword.php?error=1");
         }
         }
         else{
            echo "error occured";
+        } 
+    }
+
+    public function deleteUser($id){
+        $conn = $this->db->connect();
+        $sql = "DELETE FROM Students WHERE id = '$id'";
+        if($conn->query($sql) === TRUE){
+            header("refresh:0.5; url=action.php?all");
+        } else {
+            header("refresh:0.5; url=action.php?all=?message=Error");
         }
-        
     }
 
     public function getUser($username){
         $conn = $this->db->connect();
-        $sql = "SELECT * FROM users WHERE username = '$username'";
+        $sql = "SELECT * FROM Students WHERE username = '$username'";
         $result = $conn->query($sql);
         if($result->num_rows > 0){
             return $result->fetch_assoc();
@@ -118,21 +127,9 @@ class UserAuth extends Dbh{
         }
     }
 
-    public function deleteUser($id){
-        $conn = $this->db->connect();
-        $sql = "DELETE FROM Students WHERE id = '$id'";
-        if($conn->query($sql) === TRUE){
-            header("refresh:0.5; url=action.php?all");
-        } else {
-            header("refresh:0.5; url=action.php?all=?message=Error");
-        }
-    }
-
- 
-
     public function getUserByUsername($username){
         $conn = $this->db->connect();
-        $sql = "SELECT * FROM users WHERE username = '$username'";
+        $sql = "SELECT * FROM Students WHERE username = '$username'";
         $result = $conn->query($sql);
         if($result->num_rows > 0){
             return $result->fetch_assoc();
