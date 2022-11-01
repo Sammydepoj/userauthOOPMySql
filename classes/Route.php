@@ -11,7 +11,7 @@ class formController extends UserAuth{
 
     public function __construct(){
         $this->db = new Dbh();
-
+    }
         function handleForm(){
             switch(true) {
                 case isset($_POST['register']):
@@ -58,6 +58,6 @@ class formController extends UserAuth{
 
 
     }
-}
+
 
 
