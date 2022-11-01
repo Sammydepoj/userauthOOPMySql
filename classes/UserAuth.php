@@ -28,9 +28,7 @@ class UserAuth extends Dbh{
             } else {
                 echo "Opps". $conn->error;
             }
-        }
-
-        
+        }        
     }
 
     public function login($email, $password){
@@ -71,9 +69,9 @@ class UserAuth extends Dbh{
         } 
     }
 
-    public function deleteUser($id){
+    public function deleteUser($email){
         $conn = $this->db->connect();
-        $sql = "DELETE FROM Students WHERE id = '$id'";
+        $sql = "DELETE FROM Students WHERE Email = '$email'";
         if($conn->query($sql) === TRUE){
             header("refresh:0.5; url=action.php?all");
         } else {
@@ -110,16 +108,16 @@ class UserAuth extends Dbh{
             while($data = mysqli_fetch_assoc($result)){
                 //show data
                 echo "<tr style='height: 20px'>".
-                    "<td style='width: 50px; background: gray'>" . $data['id'] . "</td>
-                    <td style='width: 150px'>" . $data['full_names'] .
-                    "</td> <td style='width: 150px'>" . $data['email'] .
-                    "</td> <td style='width: 150px'>" . $data['gender'] . 
-                    "</td> <td style='width: 150px'>" . $data['country'] . 
+                    "<td style='width: 50px; background: gray'>" . $data['Id'] . "</td>
+                    <td style='width: 150px'>" . $data['Full_names'] .
+                    "</td> <td style='width: 150px'>" . $data['Email'] .
+                    "</td> <td style='width: 150px'>" . $data['Gender'] . 
+                    "</td> <td style='width: 150px'>" . $data['Country'] . 
                     "</td>
                     <td style='width: 150px'> 
                     <form action='action.php' method='post'>
                     <input type='hidden' name='id'" .
-                     "value=" . $data['id'] . ">".
+                     "value=" . $data['Id'] . ">".
                     "<button class='btn btn-danger' type='submit', name='delete'> DELETE </button> </form> </td>".
                     "</tr>";
             }
