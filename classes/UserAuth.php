@@ -69,9 +69,9 @@ class UserAuth extends Dbh{
         } 
     }
 
-    public function deleteUser($email){
+    public function deleteUser($id){
         $conn = $this->db->connect();
-        $sql = "DELETE FROM Students WHERE Email = '$email'";
+        $sql = "DELETE FROM Students WHERE id = '$id'";
         if($conn->query($sql) === TRUE){
             header("refresh:0.5; url=action.php?all");
         } else {
@@ -136,10 +136,10 @@ class UserAuth extends Dbh{
         }
     }
 
-    public function logout($username){
+    public function logout($email){
         session_start();
         session_destroy();
-        header('Location: index.php');
+        header('Location: ./index.php');
     }
 
   
