@@ -73,7 +73,7 @@ class UserAuth extends Dbh{
         $conn = $this->db->connect();
         $sql = "DELETE FROM Students WHERE id = '$id'";
         if($conn->query($sql) === TRUE){
-            header("refresh:0.5; url=action.php?all");
+            header("refresh:0.5; url=./dashboard.php?all");
         } else {
             header("refresh:0.5; url=action.php?all=?message=Error");
         }
